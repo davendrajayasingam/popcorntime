@@ -12,6 +12,7 @@ const metadataKeywords = ['movies', 'cinema', 'showtimes', 'latest movies', 'fil
 const metadataAuthors = [{ name: 'Davendra Jayasingam', url: 'https://davendra.me' }]
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN_NAME!),
   title: {
     default: metadataTitle,
     template: `%s | ${metadataTitle}`
