@@ -14,7 +14,7 @@ const metadataKeywords = ['movies', 'cinema', 'showtimes', 'latest movies', 'fil
 const metadataAuthors = [{ name: 'Davendra Jayasingam', url: 'https://davendra.me' }]
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN_NAME!),
+  metadataBase: new URL(`https://${process.env.NEXT_PUBLIC_DOMAIN_NAME!}`),
   title: {
     default: metadataTitle,
     template: `%s | ${metadataTitle}`
@@ -26,11 +26,11 @@ export const metadata: Metadata = {
       template: `%s | ${metadataTitle}`
     },
     description: metadataDescription,
-    url: process.env.NEXT_PUBLIC_DOMAIN_NAME,
+    url: `https://${process.env.NEXT_PUBLIC_DOMAIN_NAME}`,
     type: 'website',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_DOMAIN_NAME}/images/og-image.png`,
+        url: `https://${process.env.NEXT_PUBLIC_DOMAIN_NAME}/images/og-image.png`,
         width: 1200,
         height: 630
       }

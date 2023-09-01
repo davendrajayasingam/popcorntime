@@ -20,8 +20,7 @@ function TrackPageView({ siteId }: Props)
         load(siteId, {
             honorDNT: true,
             includedDomains: [
-                process.env.NEXT_PUBLIC_DOMAIN_NAME!,
-                `www.${process.env.NEXT_PUBLIC_DOMAIN_NAME!}`
+                process.env.NEXT_PUBLIC_DOMAIN_NAME!
             ],
             excludedDomains: [
                 'localhost'
