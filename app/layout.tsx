@@ -5,6 +5,8 @@ import '@/app/globals.css'
 import { Toaster } from 'react-hot-toast'
 
 import Analytics from '@/utils/components/Analytics'
+import Header from '@/app/header'
+import Footer from '@/app/footer'
 
 const metadataTitle = 'Now Playing In Cinemas'
 const metadataDescription = 'Explore the latest movies currently playing in cinemas near you. Stay updated with showtimes, trailers, and more.'
@@ -57,7 +59,11 @@ export default function RootLayout({ children }: Props)
     >
       <head />
       <body className='font-sans h-full'>
-        {children}
+        <Header />
+        <main className='p-4'>
+          {children}
+        </main>
+        <Footer />
         <Analytics />
         <Toaster />
       </body>
