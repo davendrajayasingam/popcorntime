@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 const fetchMovies = async (url: string): Promise<TMDBResponse> =>
     fetch(url, {
         method: 'GET',
-        next: { revalidate: 3600 },
+        next: { revalidate: 86400 },
         headers: {
             authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
             accept: 'application/json'
@@ -73,3 +73,16 @@ export const getMovies = async (query: MovieQuery): Promise<MovieResponse> =>
         ]
     }
 }
+
+export const getGenres = async (): Promise<Genre[]> =>
+    fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', {
+        method: 'GET',
+        next: { revalidate: 86400 },
+        headers: {
+            authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
+            accept: 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(res => res.genres)
+        .then(genres => genres.map(({ id, name }: { id: number, name: string }) => ({ id: `${id}`, name })))

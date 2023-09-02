@@ -42,3 +42,10 @@ type MovieResponse = {
     movies: Movie[]
     totalPages: number
 }
+
+type Genre = {
+    id: number
+    name: string
+}
+
+type SearchParams = { [key: string]: string | string[] | undefined }

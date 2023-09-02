@@ -1,35 +1,51 @@
 import { headers } from 'next/headers'
 
-import { getMovies } from '@/utils/helpers/tmdbApiHelper'
+import { getGenres, getMovies } from '@/utils/helpers/tmdbApiHelper'
 import PaginatedList from '@/components/PaginatedList'
+import GenreFilter from '@/components/GenreFilter'
 
 type Props = {
     params: {
         pageNumber: string
-    }
+    },
+    searchParams: SearchParams
 }
 
-const fetchMoviesHelper = async (pageNumber: number) => getMovies({
+const fetchMoviesHelper = async (pageNumber: number, searchParams: SearchParams) => getMovies({
     page: pageNumber,
-    sortedBy: 'popularity.desc'
+    sortedBy: 'popularity.desc',
+    genreIds: Array.isArray(searchParams.g) ? searchParams.g.map(g => Number(g)) : searchParams.g !== undefined ? [Number(searchParams.g)] : []
 })
 
-export default async function PaginationPage({ params }: Props)
+export default async function PaginationPage({ params, searchParams }: Props)
 {
     const region = headers().get('x-pt-country')!
 
     let pageNumber = Math.min(Math.max(Number(params.pageNumber) || 1, 1), 100)
 
-    let movies = await fetchMoviesHelper(pageNumber)
+    let [movies, genres] = await Promise.all([
+        fetchMoviesHelper(pageNumber, searchParams),
+        getGenres()
+    ])
 
     if (pageNumber > movies.totalPages)
     {
         pageNumber = movies.totalPages
-        movies = await fetchMoviesHelper(pageNumber)
+        movies = await fetchMoviesHelper(pageNumber, searchParams)
     }
 
-    return <PaginatedList
-        data={movies}
-        currentPage={pageNumber}
-    />
+    return <div>
+
+        <GenreFilter
+            genres={genres}
+            searchParams={searchParams}
+        />
+
+        <PaginatedList
+            data={movies}
+            currentPage={pageNumber}
+            searchParams={searchParams}
+        />
+
+    </div>
 }
