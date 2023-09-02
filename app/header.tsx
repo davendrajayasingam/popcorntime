@@ -15,13 +15,6 @@ export default function Header()
 
             {showLink('/', 'Popcorn Time')}
 
-            <nav className='flex flex-row items-center space-x-4'>
-                {showLink('/', 'Now Playing')}
-                {showLink('/upcoming', 'Upcoming')}
-                {showLink('/popular', 'Popular')}
-                {showLink('/top-rated', 'Top Rated')}
-            </nav>
-
         </header>
     )
 }

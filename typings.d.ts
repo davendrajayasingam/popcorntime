@@ -21,7 +21,24 @@ type TMDBResponse = {
         minimum: string
     }
     page: number
-    results: Movie[],
+    results: Movie[]
     total_pages: number
     total_results: number
+}
+
+type MovieQuery = {
+    page: number
+    region?: string
+    genreIds?: number[]
+    ratings?: {
+        min: number
+        max: number
+    }
+    minVotes?: number
+    sortedBy?: 'title.asc' | 'title.desc' | 'release_date.asc' | 'release_date.desc' | 'popularity.asc' | 'popularity.desc' | 'vote_average.asc' | 'vote_average.desc'
+}
+
+type MovieResponse = {
+    movies: Movie[]
+    totalPages: number
 }

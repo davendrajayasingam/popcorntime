@@ -1,48 +1,75 @@
-const fetchHelper = async (url: string): Promise<TMDBResponse> =>
-{
-    return fetch(url, {
+import { format } from 'date-fns'
+
+const fetchMovies = async (url: string): Promise<TMDBResponse> =>
+    fetch(url, {
         method: 'GET',
         next: { revalidate: 3600 },
         headers: {
             authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
             accept: 'application/json'
         }
-    })
-        .then(res => res.json())
-}
+    }).then(res => res.json())
 
-const getMoviesHelper = async (category: string, region: string) =>
+const createUrl = ({ page, region, genreIds, ratings, minVotes, sortedBy }: MovieQuery): string =>
 {
-    let results: Movie[] = []
+    const today = new Date()
+    const future = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4)
+    const past = new Date(future.getFullYear(), future.getMonth(), future.getDate() - 42)
 
-    const url = `https://api.themoviedb.org/3/movie/${category}?region=${region}`
+    const maxDate = format(future, 'yyyy-MM-dd')
+    const minDate = format(past, 'yyyy-MM-dd')
 
-    const firstPageResponse: TMDBResponse = await fetchHelper(`${url}&page=1`)
-    results.push(...firstPageResponse.results)
+    let url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&with_release_type=3'
 
-    const promises: Promise<TMDBResponse>[] = []
-    for (let i = 2; i <= firstPageResponse.total_pages; i++)
+    url += `&page=${page}`
+
+    url += `&release_date.gte=${minDate}&release_date.lte=${maxDate}`
+
+    url += `&sort_by=${sortedBy || 'popularity.desc'}`
+
+    if (region)
     {
-        promises.push(fetchHelper(`${url}&page=${i}`))
+        url += `&region=${region}`
     }
 
-    const otherPagesResponse = await Promise.all(promises)
-    for (const response of otherPagesResponse)
+    if (genreIds)
     {
-        results.push(...response.results)
+        url += `&with_genres=${genreIds.join(',')}`
     }
 
-    return results
+    if (ratings)
+    {
+        url += `&vote_average.gte=${ratings.min}&vote_average.lte=${ratings.max}`
+    }
+
+    if (minVotes)
+    {
+        url += `&vote_count.gte=${minVotes}`
+    }
+
+    return url
 }
 
-export const getNowPlayingMovies = (region: string): Promise<Movie[]> =>
-    getMoviesHelper('now_playing', region)
+export const getMovies = async (query: MovieQuery): Promise<MovieResponse> =>
+{
+    const { page } = query
 
-export const getTopRatedMovies = (region: string): Promise<Movie[]> =>
-    getMoviesHelper('top_rated', region)
+    const appendFromPreviousPage = (page * 30) % 20 === 0
+    const startingPage = page * 30 / 20
 
-export const getPopularMovies = (region: string): Promise<Movie[]> =>
-    getMoviesHelper('popular', region)
+    const firstQuery = { ...query, page: appendFromPreviousPage ? startingPage - 1 : Math.floor(startingPage) }
+    const secondQuery = { ...query, page: appendFromPreviousPage ? startingPage : Math.ceil(startingPage) }
 
-export const getUpcomingMovies = (region: string): Promise<Movie[]> =>
-    getMoviesHelper('upcoming', region)
+    const [firstResponse, secondResponse] = await Promise.all([
+        fetchMovies(createUrl(firstQuery)),
+        fetchMovies(createUrl(secondQuery))
+    ])
+
+    return {
+        totalPages: Math.ceil(firstResponse.total_results / 30),
+        movies: [
+            ...(appendFromPreviousPage ? firstResponse.results.slice(-10) : firstResponse.results),
+            ...(appendFromPreviousPage ? secondResponse.results : secondResponse.results.slice(0, 10))
+        ]
+    }
+}

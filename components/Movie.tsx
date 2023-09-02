@@ -1,7 +1,7 @@
 import Image from 'next/image'
-import { format } from 'date-fns'
 
 import placeholder from '@/components/images/placeholder.png'
+import { prettyDate } from '@/utils/helpers/timeHelper'
 
 type Props = {
     movie: Movie
@@ -27,8 +27,17 @@ export default function Movie({ movie }: Props)
                         alt={movie.title}
                         width={500}
                         height={750}
+                        className='rounded-t-xl opacity-30'
                     />
             }
+
+            {/* {
+                movie.backdrop_path
+                && <img
+                    src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
+                    alt={movie.title}
+                />
+            } */}
 
             <div className='flex flex-col space-y-2 p-4'>
 
@@ -37,7 +46,8 @@ export default function Movie({ movie }: Props)
                 </p>
 
                 <p className='text-white'>
-                    {format(new Date(movie.release_date), 'EEE, do MMM yyyy')}
+                    {/* Using this instead of date-fns because: date-fns throws an error for dates before Jan 1, 1970 */}
+                    {prettyDate(new Date(movie.release_date))}
                 </p>
 
                 <p className='font-light text-white/50 text-sm text-justify line-clamp-3'>

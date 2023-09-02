@@ -1,13 +1,21 @@
 import { headers } from 'next/headers'
 
-import { getNowPlayingMovies } from '@/utils/helpers/tmdbApiHelper'
+import { getMovies } from '@/utils/helpers/tmdbApiHelper'
 import PaginatedList from '@/components/PaginatedList'
 
 export default async function Home() 
 {
   const region = headers().get('x-pt-country')!
 
-  const [nowPlayingMovies] = await Promise.all([getNowPlayingMovies(region)])
+  const currentPage = 1
 
-  return <PaginatedList movies={nowPlayingMovies} />
+  const movies = await getMovies({
+    page: currentPage,
+    sortedBy: 'popularity.desc'
+  })
+
+  return <PaginatedList
+    data={movies}
+    currentPage={currentPage}
+  />
 }
