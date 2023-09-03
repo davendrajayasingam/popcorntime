@@ -10,12 +10,12 @@ type Props = {
 
 export default function GenreFilter({ genres, searchParams }: Props)
 {
-    const rebuildSearchParams = (genreKey: string, selectedGenre: string): string =>
+    const rebuildSearchParams = (selectedGenre: string): string =>
     {
         let updatedSearchParams = reconstructSearchParams(searchParams)
 
         // add the new search param or remove it if it already exists
-        const selectedGenreParam = `&${genreKey}=${selectedGenre}`
+        const selectedGenreParam = `&g=${selectedGenre}`
         if (updatedSearchParams.includes(selectedGenreParam))
         {
             updatedSearchParams = updatedSearchParams.replace(selectedGenreParam, '')
@@ -38,7 +38,7 @@ export default function GenreFilter({ genres, searchParams }: Props)
             {
                 genres.map(genre => <Link
                     key={genre.id}
-                    href={`/${rebuildSearchParams('g', `${genre.id}`)}`}
+                    href={`/${rebuildSearchParams(`${genre.id}`)}`}
                     className={classNames(
                         (Array.isArray(searchParams.g) && searchParams.g.includes(`${genre.id}`)) || searchParams.g === `${genre.id}` ? 'bg-amber-400 text-gray-900' : 'bg-gray-800 text-white',
                         'rounded-lg px-4 py-2',

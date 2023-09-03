@@ -5,15 +5,17 @@ export default function Header()
     const showLink = (href: string, text: string) =>
         <Link
             href={href}
-            className='font-medium text-white hover:underline'
+            className='font-bold text-lg text-white hover:underline'
         >
             {text}
         </Link>
 
     return (
-        <header className='p-4 flex items-center justify-between space-x-4 border-b border-white/10'>
+        <header className='p-4 border-b border-white/10'>
 
-            {showLink('/', 'Popcorn Time')}
+            <div className='max-w-screen-xl mx-auto'>
+                {showLink('/', 'Popcorn Time')}
+            </div>
 
         </header>
     )

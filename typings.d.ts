@@ -26,13 +26,22 @@ type Movie = {
     vote_count: number
 }
 
+type Sortable = 'pa' | 'pd' | 'va' | 'vd' | 'ra' | 'rd' | 'ta' | 'td'
+
+type SortOption = {
+    label: 'Popularity' | 'Rating' | 'Release Date' | 'Title'
+    order: 'desc' | 'asc'
+    value: Sortable
+    param: 'popularity.asc' | 'popularity.desc' | 'vote_average.asc' | 'vote_average.desc' | 'release_date.asc' | 'release_date.desc' | 'title.asc' | 'title.desc'
+}
+
 type MovieQuery = {
     page: number
     region?: string
     genreIds?: number[]
     rating: number
     minVotes?: number
-    sortedBy?: 'title.asc' | 'title.desc' | 'release_date.asc' | 'release_date.desc' | 'popularity.asc' | 'popularity.desc' | 'vote_average.asc' | 'vote_average.desc'
+    sortedBy?: SortOption.value
 }
 
 type MovieResponse = {

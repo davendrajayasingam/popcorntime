@@ -10,17 +10,17 @@ type Props = {
 
 export default function RatingsFilter({ searchParams }: Props)
 {
-    const rebuildSearchParams = (ratingsKey: string, selectedRating: number): string =>
+    const rebuildSearchParams = (selectedRating: number): string =>
     {
         let updatedSearchParams = reconstructSearchParams(searchParams)
 
         // remove the old search param
-        updatedSearchParams = updatedSearchParams.replace(`&${ratingsKey}=${searchParams.r}`, '')
+        updatedSearchParams = updatedSearchParams.replace(`&r=${searchParams.r}`, '')
 
         // add the new search param
         if (searchParams.r !== `${selectedRating}`)
         {
-            updatedSearchParams += `&${ratingsKey}=${selectedRating}`
+            updatedSearchParams += `&r=${selectedRating}`
         }
 
         return cleanupSearchParams(updatedSearchParams)
@@ -36,7 +36,7 @@ export default function RatingsFilter({ searchParams }: Props)
             {
                 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(rating => <Link
                     key={`rating-${rating}`}
-                    href={`/${rebuildSearchParams('r', rating)}`}
+                    href={`/${rebuildSearchParams(rating)}`}
                 >
                     <FaStar className={classNames(
                         'w-8 h-8 cursor-pointer',

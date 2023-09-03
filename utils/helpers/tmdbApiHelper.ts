@@ -1,3 +1,4 @@
+import { sortOptions } from '@/components/filters/Sorter'
 import { format } from 'date-fns'
 
 const fetchMovies = async (url: string): Promise<TMDBResponse> =>
@@ -22,10 +23,8 @@ const createUrl = ({ page, region, genreIds, rating, minVotes, sortedBy }: Movie
     let url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&with_release_type=3'
 
     url += `&page=${page}`
-    
-    url += `&primary_release_date.gte=${minDate}&primary_release_date.lte=${maxDate}`
 
-    url += `&sort_by=${sortedBy || 'popularity.desc'}`
+    url += `&primary_release_date.gte=${minDate}&primary_release_date.lte=${maxDate}`
 
     if (region)
     {
@@ -45,6 +44,16 @@ const createUrl = ({ page, region, genreIds, rating, minVotes, sortedBy }: Movie
     if (minVotes)
     {
         url += `&vote_count.gte=${minVotes}`
+    }
+
+    if (sortedBy)
+    {
+        const sortOption: SortOption = sortOptions.find(option => option.value === sortedBy) || sortOptions[0]
+        url += `&sort_by=${sortOption.param}`
+    }
+    else
+    {
+        url += `&sort_by=${sortOptions[0].param}`
     }
 
     return url

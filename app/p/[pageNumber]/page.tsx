@@ -4,6 +4,7 @@ import { getGenres, getMovies } from '@/utils/helpers/tmdbApiHelper'
 import PaginatedList from '@/components/PaginatedList'
 import GenreFilter from '@/components/filters/GenreFilter'
 import RatingsFilter from '@/components/filters/RatingsFilter'
+import Sorter from '@/components/filters/Sorter'
 
 type Props = {
     params: {
@@ -14,7 +15,7 @@ type Props = {
 
 const fetchMoviesHelper = async (pageNumber: number, searchParams: SearchParams) => getMovies({
     page: pageNumber,
-    sortedBy: 'popularity.desc',
+    sortedBy: searchParams.s !== undefined ? searchParams.s : 'pd',
     genreIds: Array.isArray(searchParams.g) ? searchParams.g.map(g => Number(g)) : searchParams.g !== undefined ? [Number(searchParams.g)] : [],
     rating: searchParams.r !== undefined ? Number(searchParams.r) : 0
 })
@@ -44,6 +45,8 @@ export default async function PaginationPage({ params, searchParams }: Props)
         />
 
         <RatingsFilter searchParams={searchParams} />
+
+        <Sorter searchParams={searchParams} />
 
         <PaginatedList
             data={movies}

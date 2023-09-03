@@ -4,6 +4,7 @@ import { getGenres, getMovies } from '@/utils/helpers/tmdbApiHelper'
 import GenreFilter from '@/components/filters/GenreFilter'
 import PaginatedList from '@/components/PaginatedList'
 import RatingsFilter from '@/components/filters/RatingsFilter'
+import Sorter from '@/components/filters/Sorter'
 
 type Props = {
   searchParams: SearchParams
@@ -18,7 +19,7 @@ export default async function Home({ searchParams }: Props)
   const [movies, genres] = await Promise.all([
     getMovies({
       page: currentPage,
-      sortedBy: 'popularity.desc',
+      sortedBy: searchParams.s !== undefined ? searchParams.s : 'pd',
       genreIds: Array.isArray(searchParams.g) ? searchParams.g.map(g => Number(g)) : searchParams.g !== undefined ? [Number(searchParams.g)] : [],
       rating: searchParams.r !== undefined ? Number(searchParams.r) : 0
     }),
@@ -33,6 +34,8 @@ export default async function Home({ searchParams }: Props)
     />
 
     <RatingsFilter searchParams={searchParams} />
+
+    <Sorter searchParams={searchParams} />
 
     <PaginatedList
       data={movies}
