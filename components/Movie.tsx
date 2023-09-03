@@ -29,7 +29,7 @@ export default function Movie({ movie, genres }: Props)
                         alt={movie.title}
                         width={500}
                         height={750}
-                        className='rounded-t-xl opacity-30 object-cover hover:scale-110 transition-all duration-300 ease-in-out'
+                        className='rounded-t-xl opacity-30'
                     />
             }
 
