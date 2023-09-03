@@ -9,9 +9,10 @@ type Props = {
   data: MovieResponse
   currentPage: number
   searchParams: SearchParams
+  genres: Genre[]
 }
 
-export default function PaginatedList({ data, currentPage, searchParams }: Props)
+export default function PaginatedList({ data, currentPage, searchParams, genres }: Props)
 {
   const { movies, totalPages } = data
 
@@ -34,18 +35,19 @@ export default function PaginatedList({ data, currentPage, searchParams }: Props
   return <div className='max-w-screen-xl mx-auto'>
 
     {/* List */}
-    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+    <div className='grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4'>
       {
         movies.map(movie => <Movie
           key={movie.id}
           movie={movie}
+          genres={genres}
         />)
       }
     </div>
 
     {
       movies.length === 0
-      && <p className='text-white text-center mt-8'>
+      && <p className='text-white/50 text-center my-8 p-8 border border-dashed border-white/50 rounded-xl'>
         No movies found.
       </p>
     }

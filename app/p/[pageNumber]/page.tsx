@@ -2,7 +2,8 @@ import { headers } from 'next/headers'
 
 import { getGenres, getMovies } from '@/utils/helpers/tmdbApiHelper'
 import PaginatedList from '@/components/PaginatedList'
-import GenreFilter from '@/components/GenreFilter'
+import GenreFilter from '@/components/filters/GenreFilter'
+import RatingsFilter from '@/components/filters/RatingsFilter'
 
 type Props = {
     params: {
@@ -14,7 +15,8 @@ type Props = {
 const fetchMoviesHelper = async (pageNumber: number, searchParams: SearchParams) => getMovies({
     page: pageNumber,
     sortedBy: 'popularity.desc',
-    genreIds: Array.isArray(searchParams.g) ? searchParams.g.map(g => Number(g)) : searchParams.g !== undefined ? [Number(searchParams.g)] : []
+    genreIds: Array.isArray(searchParams.g) ? searchParams.g.map(g => Number(g)) : searchParams.g !== undefined ? [Number(searchParams.g)] : [],
+    rating: searchParams.r !== undefined ? Number(searchParams.r) : 0
 })
 
 export default async function PaginationPage({ params, searchParams }: Props)
@@ -41,10 +43,13 @@ export default async function PaginationPage({ params, searchParams }: Props)
             searchParams={searchParams}
         />
 
+        <RatingsFilter searchParams={searchParams} />
+
         <PaginatedList
             data={movies}
             currentPage={pageNumber}
             searchParams={searchParams}
+            genres={genres}
         />
 
     </div>

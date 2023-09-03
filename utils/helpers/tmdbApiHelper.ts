@@ -10,7 +10,7 @@ const fetchMovies = async (url: string): Promise<TMDBResponse> =>
         }
     }).then(res => res.json())
 
-const createUrl = ({ page, region, genreIds, ratings, minVotes, sortedBy }: MovieQuery): string =>
+const createUrl = ({ page, region, genreIds, rating, minVotes, sortedBy }: MovieQuery): string =>
 {
     const today = new Date()
     const future = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4)
@@ -22,8 +22,8 @@ const createUrl = ({ page, region, genreIds, ratings, minVotes, sortedBy }: Movi
     let url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&with_release_type=3'
 
     url += `&page=${page}`
-
-    url += `&release_date.gte=${minDate}&release_date.lte=${maxDate}`
+    
+    url += `&primary_release_date.gte=${minDate}&primary_release_date.lte=${maxDate}`
 
     url += `&sort_by=${sortedBy || 'popularity.desc'}`
 
@@ -37,9 +37,9 @@ const createUrl = ({ page, region, genreIds, ratings, minVotes, sortedBy }: Movi
         url += `&with_genres=${genreIds.join(',')}`
     }
 
-    if (ratings)
+    if (rating)
     {
-        url += `&vote_average.gte=${ratings.min}&vote_average.lte=${ratings.max}`
+        url += `&vote_average.gte=${rating}&vote_count.gte=20`
     }
 
     if (minVotes)
@@ -85,4 +85,3 @@ export const getGenres = async (): Promise<Genre[]> =>
     })
         .then(res => res.json())
         .then(res => res.genres)
-        .then(genres => genres.map(({ id, name }: { id: number, name: string }) => ({ id: `${id}`, name })))

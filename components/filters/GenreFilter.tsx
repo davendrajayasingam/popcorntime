@@ -10,22 +10,22 @@ type Props = {
 
 export default function GenreFilter({ genres, searchParams }: Props)
 {
-    const rebuildSearchParams = (key: string, newParam: string): string =>
+    const rebuildSearchParams = (genreKey: string, selectedGenre: string): string =>
     {
-        let newSearchParams = reconstructSearchParams(searchParams)
+        let updatedSearchParams = reconstructSearchParams(searchParams)
 
         // add the new search param or remove it if it already exists
-        const selectedKVP = `&${key}=${newParam}`
-        if (newSearchParams.includes(selectedKVP))
+        const selectedGenreParam = `&${genreKey}=${selectedGenre}`
+        if (updatedSearchParams.includes(selectedGenreParam))
         {
-            newSearchParams = newSearchParams.replace(selectedKVP, '')
+            updatedSearchParams = updatedSearchParams.replace(selectedGenreParam, '')
         }
         else
         {
-            newSearchParams += selectedKVP
+            updatedSearchParams += selectedGenreParam
         }
 
-        return cleanupSearchParams(newSearchParams)
+        return cleanupSearchParams(updatedSearchParams)
     }
 
     return <div className='mb-8 max-w-screen-xl mx-auto'>
