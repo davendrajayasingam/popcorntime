@@ -1,5 +1,5 @@
-import { sortOptions } from '@/components/filters/Sorter'
 import { format } from 'date-fns'
+import { sortOptions } from '@/components/filters/Sorter'
 
 const fetchMovies = async (url: string): Promise<TMDBResponse> =>
     fetch(url, {

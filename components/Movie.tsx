@@ -21,7 +21,7 @@ export default function Movie({ movie, genres }: Props)
                             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                             alt={movie.title}
                             fill
-                            className='rounded-t-xl object-cover hover:scale-110 transition-all duration-300 ease-in-out'
+                            className='rounded-t-xl object-cover hover:scale-110 transition-all duration-1000 ease-in-out'
                         />
                     </div>
                     : <Image
