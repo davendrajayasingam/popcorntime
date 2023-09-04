@@ -19,6 +19,7 @@ export default function MovieList({ setupData, genres, region }: Props)
 {
     const [data, setData] = useState<MovieResponse>(setupData)
     const [currentPage, setCurrentPage] = useState<number>(1)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const viewRef = useRef<HTMLDivElement>(null)
 
@@ -49,6 +50,11 @@ export default function MovieList({ setupData, genres, region }: Props)
     {
         const queryId = ++queryCounterRef.current
 
+        if (!isLoading)
+        {
+            setIsLoading(true)
+        }
+
         const response: MovieResponse | null = await axios.post('/api/movies', {
             page: targetPage,
             genreIds: genreIdRef.current,
@@ -67,6 +73,7 @@ export default function MovieList({ setupData, genres, region }: Props)
             setData(response)
             setCurrentPage(targetPage)
             viewRef.current?.scrollIntoView({ behavior: 'smooth' })
+            setIsLoading(false)
         }
     }
 
@@ -95,6 +102,7 @@ export default function MovieList({ setupData, genres, region }: Props)
             totalPages={data.totalPages}
             genres={genres}
             onPageChange={handlePageNumberChanged}
+            showSkeleton={isLoading}
         />
 
     </div>

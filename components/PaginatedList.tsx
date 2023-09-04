@@ -2,6 +2,7 @@ import { FaAnglesLeft, FaAnglesRight } from 'react-icons/fa6'
 
 import MovieItem from '@/components/MovieItem'
 import { classNames } from '@/utils/helpers/tailwindHelper'
+import MovieSkeleton from './MovieSkeleton'
 
 type Props = {
   data: Movie[]
@@ -9,9 +10,10 @@ type Props = {
   totalPages: number
   genres: Genre[]
   onPageChange: (page: number) => void
+  showSkeleton: boolean
 }
 
-export default function PaginatedList({ data, currentPage, totalPages, genres, onPageChange }: Props)
+export default function PaginatedList({ data, currentPage, totalPages, genres, onPageChange, showSkeleton }: Props)
 {
   const startingPage = Math.max(currentPage - 2 - (totalPages - currentPage < 2 ? 2 - (totalPages - currentPage) : 0), 1)
   const endingPage = Math.min(startingPage + 4, totalPages)
@@ -73,11 +75,13 @@ export default function PaginatedList({ data, currentPage, totalPages, genres, o
     {/* List of movies */}
     <div className='my-4 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4'>
       {
-        data.map(movie => <MovieItem
-          key={movie.id}
-          movie={movie}
-          genres={genres}
-        />)
+        data.map(movie => showSkeleton
+          ? <MovieSkeleton key={movie.id} />
+          : <MovieItem
+            key={movie.id}
+            movie={movie}
+            genres={genres}
+          />)
       }
     </div>
 
