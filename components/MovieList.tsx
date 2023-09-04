@@ -12,6 +12,7 @@ import RatingsFilter from '@/components/filters/RatingsFilter'
 import SortOptions from '@/components/filters/SortOptions'
 import PaginatedList from '@/components/PaginatedList'
 import MovieDetails from '@/components/MovieDetails'
+import MovieDetailsSkeleton from '@/components/MovieDetailsSkeleton'
 
 type Props = {
     setupData: MovieResponse
@@ -184,7 +185,7 @@ export default function MovieList({ setupData, genres, region }: Props)
             <div className='mt-[5vh] w-full text-center z-20'>
                 <button
                     type='button'
-                    className='border-2 border-white/50 bg-amber-400 rounded-t-full p-2 outline-none focus:outline-none'
+                    className='border-2 border-white/30 bg-amber-400 rounded-t-full p-2 outline-none focus:outline-none'
                     onClick={handleCloseDialog}
                 >
                     <FaXmark className='text-gray-900 w-6 h-6' />
@@ -192,11 +193,11 @@ export default function MovieList({ setupData, genres, region }: Props)
             </div>
 
             {/* Model contents */}
-            <div className='-mt-0.5 relative bg-gray-950 w-screen max-w-screen-md mx-auto min-h-screen border-x-2 border-t-2 border-white/50'>
+            <div className='relative bg-gray-950 w-screen max-w-screen-md mx-auto min-h-screen border-x-2 border-t-2 border-white/50'>
                 {
                     movieDetails
                         ? <MovieDetails movie={movieDetails} />
-                        : <p className='text-white'>Loading...</p>
+                        : <MovieDetailsSkeleton />
                 }
             </div>
 

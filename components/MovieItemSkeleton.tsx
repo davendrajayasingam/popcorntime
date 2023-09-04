@@ -1,6 +1,6 @@
 import { FaImage, FaStar } from 'react-icons/fa6'
 
-export default function MovieSkeleton()
+export default function MovieItemSkeleton()
 {
     return (
         <div className='bg-gray-800 rounded-xl animate-pulse'>

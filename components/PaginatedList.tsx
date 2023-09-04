@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 
 import MovieItem from '@/components/MovieItem'
 import { classNames } from '@/utils/helpers/tailwindHelper'
-import MovieSkeleton from './MovieSkeleton'
+import MovieItemSkeleton from './MovieItemSkeleton'
 
 type Props = {
   data: Movie[]
@@ -101,7 +101,7 @@ export default function PaginatedList({ data, currentPage, totalPages, genres, o
     <div className='my-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
       {
         data.map(movie => showSkeleton
-          ? <MovieSkeleton key={movie.id} />
+          ? <MovieItemSkeleton key={movie.id} />
           : <div
             key={movie.id}
             className='movie-item opacity-0'
