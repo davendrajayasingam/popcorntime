@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `https://${process.env.NEXT_PUBLIC_DOMAIN_NAME}/images/og-image.png`,
+        url: `https://${process.env.NEXT_PUBLIC_DOMAIN_NAME}/images/og-image.jpg`,
         width: 1200,
         height: 630
       }
