@@ -1,4 +1,7 @@
+import { useEffect } from 'react'
 import { FaAnglesLeft, FaAnglesRight } from 'react-icons/fa6'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 
 import MovieItem from '@/components/MovieItem'
 import { classNames } from '@/utils/helpers/tailwindHelper'
@@ -11,9 +14,10 @@ type Props = {
   genres: Genre[]
   onPageChange: (page: number) => void
   showSkeleton: boolean
+  onClick: (movieId: number) => void
 }
 
-export default function PaginatedList({ data, currentPage, totalPages, genres, onPageChange, showSkeleton }: Props)
+export default function PaginatedList({ data, currentPage, totalPages, genres, onPageChange, showSkeleton, onClick }: Props)
 {
   const startingPage = Math.max(currentPage - 2 - (totalPages - currentPage < 2 ? 2 - (totalPages - currentPage) : 0), 1)
   const endingPage = Math.min(startingPage + 4, totalPages)
@@ -67,21 +71,47 @@ export default function PaginatedList({ data, currentPage, totalPages, genres, o
     </div>
   )
 
+  useEffect(() =>
+  {
+    gsap.registerPlugin(ScrollTrigger)
+  }, [])
+
+  useEffect(() =>
+  {
+    ScrollTrigger.batch('.movie-item', {
+      onEnter: batch => gsap.fromTo(batch,
+        {
+          opacity: 0,
+          yPercent: 30
+        },
+        {
+          opacity: 1,
+          yPercent: 0,
+          stagger: 0.1
+        })
+    })
+  }, [data])
+
   return <div className='py-8 max-w-screen-xl mx-auto'>
 
     {/* Top pagination */}
     {totalPages > 1 && <Pagination />}
 
     {/* List of movies */}
-    <div className='my-4 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4'>
+    <div className='my-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
       {
         data.map(movie => showSkeleton
           ? <MovieSkeleton key={movie.id} />
-          : <MovieItem
+          : <div
             key={movie.id}
-            movie={movie}
-            genres={genres}
-          />)
+            className='movie-item opacity-0'
+          >
+            <MovieItem
+              movie={movie}
+              genres={genres}
+              onClick={() => onClick(movie.id)}
+            />
+          </div>)
       }
     </div>
 

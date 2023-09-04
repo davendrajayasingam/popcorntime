@@ -28,7 +28,7 @@ export default function RatingsFilter({ onChange }: Props)
 
     return <div className='max-w-screen-xl mx-auto'>
 
-        <p className='font-bold text-lg text-white'>
+        <p className='font-bold sm:text-lg text-white'>
             Ratings
         </p>
 
@@ -41,11 +41,11 @@ export default function RatingsFilter({ onChange }: Props)
                     onMouseLeave={() => setHoveredRating(0)}
                 >
                     <FaStar className={classNames(
-                        'w-8 h-8 cursor-pointer',
+                        'w-7 sm:w-10 h-7 sm:h-10 cursor-pointer',
                         (hoveredRating !== 0 ? rating < hoveredRating : rating <= selectedRating) ? 'text-amber-400' : 'text-gray-800 hover:text-amber-400',
                         'transition-colors duration-300 ease-in-out'
                     )} />
-                    <p className='font-bold text-white text-xs text-center'>
+                    <p className='font-medium text-white text-xs sm:text-base text-center'>
                         {rating}
                     </p>
                 </button>)

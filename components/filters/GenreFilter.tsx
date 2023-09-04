@@ -28,11 +28,11 @@ export default function GenreFilter({ genres, onChange }: Props)
 
     return <div className='max-w-screen-xl mx-auto'>
 
-        <p className='font-bold text-lg text-white'>
+        <p className='font-bold sm:text-lg text-white'>
             Genres
         </p>
 
-        <div className='mt-2 flex flex-wrap gap-4'>
+        <div className='mt-2 flex flex-wrap gap-x-1 gap-y-2 sm:gap-4'>
             {
                 genres.map(genre => <button
                     key={genre.id}
@@ -40,8 +40,8 @@ export default function GenreFilter({ genres, onChange }: Props)
                     className={classNames(
                         selectedGenreIds.includes(genre.id) ? 'bg-amber-400 text-gray-900' : 'bg-gray-800 text-white',
                         'hover:bg-amber-400 hover:text-gray-900',
-                        'rounded-lg px-4 py-2',
-                        'font-semibold text-sm',
+                        'rounded-lg px-2 sm:px-4 py-2',
+                        'font-medium text-xs sm:text-sm',
                         'transition-all duration-300 ease-in-out',
                         'outline-none focus:outline-none'
                     )}

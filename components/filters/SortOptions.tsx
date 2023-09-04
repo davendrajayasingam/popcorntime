@@ -38,19 +38,19 @@ export default function SortOptions({ onChange }: Props)
 
     return <div className='max-w-screen-xl mx-auto'>
 
-        <p className='font-bold text-lg text-white'>
+        <p className='font-bold sm:text-lg text-white'>
             Sort
         </p>
 
-        <div className='mt-2 flex flex-wrap gap-4'>
+        <div className='mt-2 flex flex-wrap gap-2 sm:gap-4'>
             {
                 buttonNames.map(buttonName => <button
                     key={buttonName}
                     className={classNames(
                         selectedSortOption.label === buttonName ? 'bg-amber-400 text-gray-900' : 'bg-gray-800 text-white',
-                        'rounded-lg px-4 py-2',
-                        'font-semibold text-sm',
-                        'flex flex-row items-center space-x-1'
+                        'rounded-lg px-3 sm:px-4 py-2',
+                        'font-semibold text-xs sm:text-sm',
+                        'flex flex-row items-center sm:space-x-1'
                     )}
                     onClick={() => handleSortOptionSelected(buttonName)}
                 >

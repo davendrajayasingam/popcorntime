@@ -30,3 +30,27 @@ export const prettyDate = (date: Date): string =>
 
     return `${dayOfWeek}, ${formattedDayOfMonth} ${monthName} ${date.getFullYear()}`
 }
+
+export const formatMinutesToHoursAndMinutes = (minutes: number) =>
+{
+    if (isNaN(minutes) || minutes < 0)
+    {
+        return '-'
+    }
+
+    const hours = Math.floor(minutes / 60)
+    const remainingMinutes = minutes % 60
+
+    const hoursText = hours > 0 ? `${hours} hr` : ''
+    const minutesText = remainingMinutes > 0 ? `${remainingMinutes} min` : ''
+
+    // Combine hours and minutes with 'and' if both are present
+    if (hoursText && minutesText)
+    {
+        return `${hoursText} ${minutesText}`
+    }
+    else
+    {
+        return hoursText + minutesText
+    }
+}
