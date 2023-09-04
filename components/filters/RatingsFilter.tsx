@@ -1,32 +1,32 @@
-import Link from 'next/link'
+import { useState } from 'react'
 import { FaStar } from 'react-icons/fa6'
 
 import { classNames } from '@/utils/helpers/tailwindHelper'
-import { cleanupSearchParams, reconstructSearchParams } from '@/utils/helpers/util'
 
 type Props = {
-    searchParams: SearchParams
+    onChange: (selectedRating: number) => void
 }
 
-export default function RatingsFilter({ searchParams }: Props)
+export default function RatingsFilter({ onChange }: Props)
 {
-    const rebuildSearchParams = (selectedRating: number): string =>
+    const [selectedRating, setSelectedRating] = useState<number>(0)
+    const [hoveredRating, setHoveredRating] = useState<number>(0)
+
+    const handleRatingSelected = (rating: number) =>
     {
-        let updatedSearchParams = reconstructSearchParams(searchParams)
-
-        // remove the old search param
-        updatedSearchParams = updatedSearchParams.replace(`&r=${searchParams.r}`, '')
-
-        // add the new search param
-        if (searchParams.r !== `${selectedRating}`)
+        if (rating === selectedRating)
         {
-            updatedSearchParams += `&r=${selectedRating}`
+            setSelectedRating(0)
+            onChange(0)
         }
-
-        return cleanupSearchParams(updatedSearchParams)
+        else
+        {
+            setSelectedRating(rating)
+            onChange(rating)
+        }
     }
 
-    return <div className='mb-8 max-w-screen-xl mx-auto'>
+    return <div className='max-w-screen-xl mx-auto'>
 
         <p className='font-bold text-lg text-white'>
             Ratings
@@ -34,19 +34,21 @@ export default function RatingsFilter({ searchParams }: Props)
 
         <div className='mt-2 flex flex-row items-center space-x-1'>
             {
-                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(rating => <Link
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(rating => <button
                     key={`rating-${rating}`}
-                    href={`/${rebuildSearchParams(rating)}`}
+                    onClick={() => handleRatingSelected(rating)}
+                    onMouseEnter={() => setHoveredRating(rating)}
+                    onMouseLeave={() => setHoveredRating(0)}
                 >
                     <FaStar className={classNames(
                         'w-8 h-8 cursor-pointer',
-                        rating <= Number(searchParams.r) ? 'text-amber-400' : 'text-gray-800 hover:text-amber-400',
+                        (hoveredRating !== 0 ? rating < hoveredRating : rating <= selectedRating) ? 'text-amber-400' : 'text-gray-800 hover:text-amber-400',
                         'transition-colors duration-300 ease-in-out'
                     )} />
                     <p className='font-bold text-white text-xs text-center'>
                         {rating}
                     </p>
-                </Link>)
+                </button>)
             }
         </div>
 

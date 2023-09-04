@@ -9,7 +9,7 @@ import Header from '@/app/header'
 import Footer from '@/app/footer'
 
 const metadataTitle = 'Now Playing In Cinemas'
-const metadataDescription = 'Explore the latest movies currently playing in cinemas near you. Stay updated with showtimes, trailers, and more.'
+const metadataDescription = 'Explore the latest movies currently playing in cinemas near you.'
 const metadataKeywords = ['movies', 'cinema', 'showtimes', 'latest movies', 'film', 'trailers']
 const metadataAuthors = [{ name: 'Davendra Jayasingam', url: 'https://davendra.me' }]
 
@@ -60,9 +60,7 @@ export default function RootLayout({ children }: Props)
       <head />
       <body className='font-sans h-full'>
         <Header />
-        <main className='p-4'>
-          {children}
-        </main>
+        {children}
         <Footer />
         <Analytics />
         <Toaster />

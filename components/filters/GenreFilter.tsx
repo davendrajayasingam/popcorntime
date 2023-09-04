@@ -1,34 +1,32 @@
-import Link from 'next/link'
+import { useState } from 'react'
 
 import { classNames } from '@/utils/helpers/tailwindHelper'
-import { cleanupSearchParams, reconstructSearchParams } from '@/utils/helpers/util'
 
 type Props = {
     genres: Genre[]
-    searchParams: SearchParams
+    onChange: (selectedGenreIds: number[]) => void
 }
 
-export default function GenreFilter({ genres, searchParams }: Props)
+export default function GenreFilter({ genres, onChange }: Props)
 {
-    const rebuildSearchParams = (selectedGenre: string): string =>
-    {
-        let updatedSearchParams = reconstructSearchParams(searchParams)
+    const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([])
 
-        // add the new search param or remove it if it already exists
-        const selectedGenreParam = `&g=${selectedGenre}`
-        if (updatedSearchParams.includes(selectedGenreParam))
+    const handleGenreIdSelected = (genreId: number) =>
+    {
+        let newIds = [...selectedGenreIds]
+        if (newIds.includes(genreId))
         {
-            updatedSearchParams = updatedSearchParams.replace(selectedGenreParam, '')
+            newIds = newIds.filter(id => id !== genreId)
         }
         else
         {
-            updatedSearchParams += selectedGenreParam
+            newIds.push(genreId)
         }
-
-        return cleanupSearchParams(updatedSearchParams)
+        setSelectedGenreIds(newIds)
+        onChange(newIds)
     }
 
-    return <div className='mb-8 max-w-screen-xl mx-auto'>
+    return <div className='max-w-screen-xl mx-auto'>
 
         <p className='font-bold text-lg text-white'>
             Genres
@@ -36,17 +34,21 @@ export default function GenreFilter({ genres, searchParams }: Props)
 
         <div className='mt-2 flex flex-wrap gap-4'>
             {
-                genres.map(genre => <Link
+                genres.map(genre => <button
                     key={genre.id}
-                    href={`/${rebuildSearchParams(`${genre.id}`)}`}
+                    type='button'
                     className={classNames(
-                        (Array.isArray(searchParams.g) && searchParams.g.includes(`${genre.id}`)) || searchParams.g === `${genre.id}` ? 'bg-amber-400 text-gray-900' : 'bg-gray-800 text-white',
+                        selectedGenreIds.includes(genre.id) ? 'bg-amber-400 text-gray-900' : 'bg-gray-800 text-white',
+                        'hover:bg-amber-400 hover:text-gray-900',
                         'rounded-lg px-4 py-2',
-                        'font-semibold text-sm'
+                        'font-semibold text-sm',
+                        'transition-all duration-300 ease-in-out',
+                        'outline-none focus:outline-none'
                     )}
+                    onClick={() => handleGenreIdSelected(genre.id)}
                 >
                     {genre.name}
-                </Link>)
+                </button>)
             }
         </div>
 

@@ -9,7 +9,7 @@ type Props = {
     genres: Genre[]
 }
 
-export default function Movie({ movie, genres }: Props)
+export default function MovieItem({ movie, genres }: Props)
 {
     return (
         <div className='bg-gray-800 rounded-xl'>
@@ -21,6 +21,7 @@ export default function Movie({ movie, genres }: Props)
                             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                             alt={movie.title}
                             fill
+                            sizes='500px'
                             className='rounded-t-xl object-cover hover:scale-110 transition-all duration-1000 ease-in-out'
                         />
                     </div>

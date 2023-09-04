@@ -1,55 +1,22 @@
 import { headers } from 'next/headers'
 
 import { getGenres, getMovies } from '@/utils/helpers/tmdbApiHelper'
-import GenreFilter from '@/components/filters/GenreFilter'
-import PaginatedList from '@/components/PaginatedList'
-import RatingsFilter from '@/components/filters/RatingsFilter'
-import Sorter from '@/components/filters/Sorter'
-import { getAbsolutePath } from '@/utils/helpers/absolutePathHelper'
+import MovieList from '@/components/MovieList'
 
-type Props = {
-  searchParams: SearchParams
-}
-
-export default async function Home({ searchParams }: Props) 
+export default async function HomePage() 
 {
   const region = headers().get('x-pt-country')!
 
-  const currentPage = 1
-
-  const [movies, genres, test] = await Promise.all([
-    getMovies({
-      page: currentPage,
-      sortedBy: searchParams.s !== undefined ? searchParams.s : 'pd',
-      genreIds: Array.isArray(searchParams.g) ? searchParams.g.map(g => Number(g)) : searchParams.g !== undefined ? [Number(searchParams.g)] : [],
-      rating: searchParams.r !== undefined ? Number(searchParams.r) : 0
-    }),
-    getGenres(),
-    fetch(getAbsolutePath('/api/discover'), {
-      method: 'GET',
-      next: { revalidate: 20 }
-    }).then(res => res.json())
+  const [movies, genres] = await Promise.all([
+    getMovies(),
+    getGenres()
   ])
 
-  return <div>
-
-    <p className='text-white'>Test result: {test}</p>
-
-    <GenreFilter
+  return <div className='p-4'>
+    <MovieList
+      setupData={movies}
       genres={genres}
-      searchParams={searchParams}
+      region={region}
     />
-
-    <RatingsFilter searchParams={searchParams} />
-
-    <Sorter searchParams={searchParams} />
-
-    <PaginatedList
-      data={movies}
-      currentPage={currentPage}
-      searchParams={searchParams}
-      genres={genres}
-    />
-
   </div>
 }
