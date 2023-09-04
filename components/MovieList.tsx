@@ -151,7 +151,7 @@ export default function MovieList({ setupData, genres, region }: Props)
 
         <div className=''>
 
-            <div className='space-y-4'>
+            <div className='space-y-2 sm:space-y-4'>
                 <GenreFilter
                     genres={genres}
                     onChange={handleGenresUpdated}

@@ -42,7 +42,7 @@ export default function SortOptions({ onChange }: Props)
             Sort
         </p>
 
-        <div className='mt-2 flex flex-wrap gap-2 sm:gap-4'>
+        <div className='mt-1 sm:mt-2 flex flex-wrap gap-2 sm:gap-4'>
             {
                 buttonNames.map(buttonName => <button
                     key={buttonName}

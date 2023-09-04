@@ -32,7 +32,7 @@ export default function RatingsFilter({ onChange }: Props)
             Ratings
         </p>
 
-        <div className='mt-2 flex flex-row items-center space-x-1'>
+        <div className='mt-1 sm:mt-2 flex flex-row items-center space-x-1'>
             {
                 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(rating => <button
                     key={`rating-${rating}`}

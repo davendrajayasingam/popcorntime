@@ -32,7 +32,7 @@ export default function GenreFilter({ genres, onChange }: Props)
             Genres
         </p>
 
-        <div className='mt-2 flex flex-wrap gap-x-1 gap-y-2 sm:gap-4'>
+        <div className='mt-1 sm:mt-2 flex flex-wrap gap-x-1 gap-y-2 sm:gap-4'>
             {
                 genres.map(genre => <button
                     key={genre.id}
