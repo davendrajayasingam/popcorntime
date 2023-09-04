@@ -191,7 +191,7 @@ export default function MovieDetails({ movie }: Props)
 
         </div>
 
-        <div className='h-[10vh]' />
+        <div className='h-[30vh]' />
 
     </div>
 }

@@ -174,13 +174,13 @@ export default function MovieList({ setupData, genres, region }: Props)
         </div>
 
         {/* Modal backdrop */}
-        <div className='modal-backdrop w-screen h-screen fixed inset-0 z-10 bg-black/50 backdrop-blur-sm opacity-0' />
+        <div
+            onClick={handleCloseDialog}
+            className='modal-backdrop w-screen h-screen fixed inset-0 z-10 bg-black/50 backdrop-blur-sm opacity-0'
+        />
 
         {/* Modal contents */}
-        <div
-            className='modal-contents w-screen h-screen fixed inset-0 z-20 opacity-0'
-            onClick={handleCloseDialog}
-        >
+        <div className='modal-contents w-screen max-w-screen-md mx-auto h-screen fixed inset-0 z-20 opacity-0'>
             {/* Close modal */}
             <div className='mt-[5vh] w-full text-center z-20'>
                 <button
